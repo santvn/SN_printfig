@@ -66,4 +66,5 @@ SN_PRINTFIG saves a specified figure as an image in MATLAB
   See also print, saveas, imwrite
  
   Created by San Nguyen 2012 05 09
+  
   Updated by San Nguyen 2014 10 21
