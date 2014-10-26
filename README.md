@@ -3,13 +3,12 @@ SN_printfig
 
 SN_PRINTFIG saves a specified figure as an image in MATLAB
 
-  SN_printfig saves a specified figure as an image
- 
    SN_printfig(FILENAME) saves a specified figure as an JPG image with a
     specified FILENAME 
    SN_printfig(FILENAME,'OPTIONS',OPT_VAL) allows users to add more advance
    options
    The OPTIONS are:
+   
         'QUALITY':  File quality of a jpeg image ranging 0-100 (integer only)
         'RESOLUTION' or 'DPI': print resolution in the unit of Dots Per Inch
             (no negative integer only)
@@ -24,17 +23,8 @@ SN_PRINTFIG saves a specified figure as an image in MATLAB
                 [WIDTH  HEIGHT]
         'WIDTH': width of the image in inches (height will be autoset)
         'HEIGHT': height of the image in inches (width will be autoset)
-        'FONTSIZE': the specific fontsize for the figure upon saving
-        'FONTSIZERATIO': font size ratio upon saving the figure, the
-            FONTSIZERATIO can specified in percentage string like '125%' or
-            just numerical values like 1.25
-        'NOFOOTNOTE': set to have no foot notes generated
-            footnote is generated to indicate the time and source of the
-            figure
-        'NOSOURCE': set to not indicate source (if figure is generated from
-            an m-file
-        'NOTIMESTAMP': set to not indicate a timestamp of a figure being saved
  
+        
         eps, epsc       Encapsulated PostScript - Color (vector)
         epsmono         Encapsulated PostScript - Black & White (vector)
         eps2, epsc2     Encapsulated PostScript Level 2 - Color (vector)
@@ -77,4 +67,5 @@ SN_PRINTFIG saves a specified figure as an image in MATLAB
   See also print, saveas, imwrite
  
   Created by San Nguyen 2012 05 09
-  Updated by San Nguyen 2014 10 26
+  
+  Updated by San Nguyen 2014 10 21
