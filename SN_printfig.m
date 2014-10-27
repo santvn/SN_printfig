@@ -439,7 +439,7 @@ if PrintScreen
     set(Figure,'PaperUnits','inches',...
         'PaperPosition',newpos,'PaperSize',newpos(end-1:end))
     writeSource();
-    set(Figure,'renderer','painters');
+%     set(Figure,'renderer','painters');
     drawnow;
     print(Figure,FileTypePrintCmd,filename,DPIcmd,varargin{isOtherPrintOptions});
     set(Figure,'Units',oldscreenunits,...
@@ -474,7 +474,7 @@ elseif ~empty(PSize)
     set(Figure,'PaperUnits',PUnits,...
         'PaperPosition',newpos,'PaperSize',[Psize(1) Psize(2)]);
     writeSource();
-    set(Figure,'renderer','painters');
+%     set(Figure,'rensderer','painters');
     drawnow;
     print(Figure,FileTypePrintCmd,filename,DPIcmd,varargin{isOtherPrintOptions});
     set(Figure,'Units',oldscreenunits,...
@@ -498,7 +498,7 @@ elseif ~empty(PSize)
     return;
 end
 writeSource();
-set(Figure,'renderer','painters');
+% set(Figure,'renderer','painters');
 print(Figure,FileTypePrintCmd,filename,DPIcmd,varargin{isOtherPrintOptions});
 if isobject(SourceText)
     delete(SourceText);
@@ -536,8 +536,8 @@ end
         % if the figure doesn't contain the source we might try to extract
         % from the m-file that calls this function
         if ~isstruct(fig_UserData) && isnan(fig_UserData)
-            [ST,I] = dbstack('-completenames');
-            for ii=I:-1:1
+            [ST,~] = dbstack('-completenames');
+            for ii=1:numel(ST)
                 if strncmp(ST(ii).name,'SN_printfig',11)
                     continue;
                 else
