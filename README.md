@@ -2,9 +2,12 @@ SN_PRINTFIG saves a specified figure as an image
 
  SN_PRINTFIG(FILENAME) saves a specified figure as an JPG image with a
   specified FILENAME 
+  
  SN_PRINTFIG(FILENAME,'OPTIONS',OPT_VAL) allows users to add more advance
  options
+ 
  The OPTIONS are:
+ 
       'QUALITY':  File quality of a jpeg image ranging 0-100 (integer only)
       
       'RESOLUTION' or 'DPI': print resolution in the unit of Dots Per Inch
@@ -77,9 +80,13 @@ SN_PRINTFIG saves a specified figure as an image
 
 
 Here are other options you can use without a value of each option
+
   -noui      Do not print UI control objects
+  
   -painters  Rendering for printing to be done in Painters mode
+  
   -zbuffer   Rendering for printing to be done in Z-buffer mode%
+  
   -opengl    Rendering for printing to be done in OpenGL mode
 
 See also PRINT, SAVEAS, IMWRITE
