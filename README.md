@@ -6,28 +6,41 @@ SN_PRINTFIG saves a specified figure as an image
  options
  The OPTIONS are:
       'QUALITY':  File quality of a jpeg image ranging 0-100 (integer only)
+      
       'RESOLUTION' or 'DPI': print resolution in the unit of Dots Per Inch
           (no negative integer only)
+          
       'PRINTSCREEN':  TRUE or FALSE, if TRUE (by default), the figure will
           be saved as displayed on the screen, which is very useful for 
           those who are used to doing that
+          
       'FIGURE':   specific figure handle to save instead of the current
           figure handle
+          
       'FILETYPE': A string that can specify the file type you would like to
           save. Below are the file types supported 
+          
       'SIZE': 2x1 vector that specifies that size in inches 
               [WIDTH  HEIGHT]
+              
       'WIDTH': width of the image in inches (height will be autoset)
+      
       'HEIGHT': height of the image in inches (width will be autoset)
+      
       'FONTSIZE': the specific fontsize for the figure upon saving
+      
       'FONTSIZERATIO': font size ratio upon saving the figure, the
+      
           FONTSIZERATIO can specified in percentage string like '125%' or
           just numerical values like 1.25
+          
       'NOFOOTNOTE': set to have no foot notes generated
           footnote is generated to indicate the time and source of the
           figure
+          
       'NOSOURCE': set to not indicate source (if figure is generated from
           an m-file
+          
       'NOTIMESTAMP': set to not indicate a timestamp of a figure being saved
 
       eps, epsc       Encapsulated PostScript - Color (vector)
