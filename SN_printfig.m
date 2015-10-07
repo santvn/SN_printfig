@@ -154,7 +154,7 @@ Height = [];
 FontSizeRatio = 1; % this means 100%
 FontSize = NaN;
 orgFontSize = NaN;
-FootNote = true;
+FootNote = false;
 NoSource = false;
 NoTimeStamp = false;
 SourceAX = NaN;
@@ -201,19 +201,7 @@ while (n_items > 0)
             
             index = index +2;
             n_items = n_items-2;
-        case 3 % dpi
-            if n_items == 1
-                error('MATLAB:SN_printfig:missingArgs','Missing input arguments');
-            end
-            DPI = ceil(varargin{index+1});
-            if DPI < 1
-                error('MATLAB:SN_printfig:DPIInteger',...
-                    'Resolution value (DPI) value must be an integer greater than zero');
-            end
-            
-            index = index +2;
-            n_items = n_items-2;
-        case 4 % resolution
+        case {3,4} % dpi
             if n_items == 1
                 error('MATLAB:SN_printfig:missingArgs','Missing input arguments');
             end
