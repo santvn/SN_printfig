@@ -24,12 +24,13 @@ function SN_printfig(filename,varargin)
 %       'FONTSIZERATIO': font size ratio upon saving the figure, the
 %           FONTSIZERATIO can specified in percentage string like '125%' or
 %           just numerical values like 1.25
-%       'NOFOOTNOTE': set to have no foot notes generated
+%       'FOOTNOTE': set to have foot notes generated
 %           footnote is generated to indicate the time and source of the
-%           figure
-%       'NOSOURCE': set to not indicate source (if figure is generated from
-%           an m-file
-%       'NOTIMESTAMP': set to not indicate a timestamp of a figure being saved
+%           figure [TRUE or FALSE]
+%       'SOURCE': set to not indicate source (if figure is generated from
+%           an m-file [TRUE or FALSE]
+%       'TIMESTAMP': set to not indicate a timestamp of a figure being
+%           saved [TRUE or FALSE]
 %
 %       eps, epsc       Encapsulated PostScript - Color (vector)
 %       epsmono         Encapsulated PostScript - Black & White (vector)
@@ -218,7 +219,7 @@ while (n_items > 0)
                 error('MATLAB:SN_printfig:missingArgs','Missing input arguments');
             end
             PrintScreen = varargin{index+1};
-            if ~islogical(PrintScreen)
+            if ~isscalar(PrintScreen) || ~islogical(PrintScreen)
                 error('MATLAB:SN_printfig:PrintScreent',...
                     'PrintScreen must be logical');
             end
@@ -314,11 +315,11 @@ while (n_items > 0)
                 error('MATLAB:SN_printfig:missingArgs','Missing input arguments');
             end
             FontSize = varargin{index+1};
-            if ~isnumeric(FontSize) || FontSize <= 0;
-                error('MATLAB:SN_printfig:FontSize','FontSize must be numeric and greater than zero');
-            end
             if ~isscalar(FontSize)
                 error('MATLAB:SN_printfig:FontSize','FontSize must be a scalar value');
+            end
+            if ~isnumeric(FontSize) || FontSize <= 0;
+                error('MATLAB:SN_printfig:FontSize','FontSize must be numeric and greater than zero');
             end
             index = index +2;
             n_items = n_items-2;
@@ -346,18 +347,48 @@ while (n_items > 0)
             end
             index = index +2;
             n_items = n_items-2;
-        case 14 % NoFootNote
-            FootNote = false;
-            index = index +1;
-            n_items = n_items-1;  
-        case 15 % NoSource
-            NoSource = true;
-            index = index +1;
-            n_items = n_items-1;
-        case 16 % NoTimeStamp
-            NoTimeStamp = true;
-            index = index +1;
-            n_items = n_items-1;
+        case 14 % FootNote
+            if n_items == 1
+                FootNote = true;
+                index = index +1;
+                n_items = n_items-1;
+                continue;
+            end
+            FootNote = varargin{index+1};
+            if ~isscalar(FootNote) || ~islogical(FootNote)
+                error('MATLAB:SN_printfig:FootNote','FootNote must be a scalar true or false');
+            end
+            index = index +2;
+            n_items = n_items-2;
+            
+        case 15 % Source
+            if n_items == 1
+                NoSource = false;
+                index = index +1;
+                n_items = n_items-1;
+                continue;
+            end
+            NoSource = varargin{index+1};
+            if ~isscalar(NoSource) || ~islogical(NoSource)
+                error('MATLAB:SN_printfig:NoSource','NoSource must be a scalar true or false');
+            end
+            NoSource = ~NoSource;
+            index = index +2;
+            n_items = n_items-2;
+        case 16 % TimeStamp
+            if n_items == 1
+                NoTimeStamp = false;
+                index = index +1;
+                n_items = n_items-1;
+                continue;
+            end
+            NoTimeStamp = varargin{index+1};
+            if ~isscalar(NoTimeStamp) || ~islogical(NoTimeStamp)
+                error('MATLAB:SN_printfig:NoTimeStamp','NoTimeStamp must be a scalar true or false');
+            end
+            NoTimeStamp = ~NoTimeStamp;
+            index = index +2;
+            n_items = n_items-2;
     end
 end
 if ~isnan(FontSize)
