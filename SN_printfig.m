@@ -515,8 +515,10 @@ elseif ~empty(PSize)
         setFontSizeRatio(gcf,1/FontSizeRatio);
     end
     return;
+else
+    writeSource();
 end
-writeSource();
+
 % set(Figure,'renderer','painters');
 print(Figure,FileTypePrintCmd,filename,DPIcmd,varargin{isOtherPrintOptions});
 if isobject(SourceText)
@@ -588,7 +590,7 @@ end
             gcf_w = gcf_pos(3);
             gcf_h = gcf_pos(4);
             
-            fontSize = 1/100;
+            fontSize = 2/100;
             
             if isempty(mFileName) || NoSource
                 if NoTimeStamp
@@ -753,11 +755,6 @@ function orgFontSize = setFontSize(ax,FontSize)
         end
     end
     
-    if isprop(ax,'FontSize')
-        orgFontSize = get(ax,'FontSize');
-        set(ax,'FontSize',FontSize);
-    end
-    
     if verLessThan('matlab','8.4') && isa(ax, 'double')
         ax = handle(ax);
         if isgraphics(ax)
@@ -842,6 +839,12 @@ function orgFontSize = setFontSize(ax,FontSize)
             continue;
         end
     end
+    
+    %set font size
+    if isprop(ax,'FontSize')
+        orgFontSize = get(ax,'FontSize');
+        set(ax,'FontSize',FontSize);
+    end
 end
 % recursively set all objects under ax
 function setFontSizeRatio(ax,FontSizeRatio)
@@ -879,11 +882,6 @@ function setFontSizeRatio(ax,FontSizeRatio)
         if strncmpi(type(end-3:end),'tool',4);
             return;
         end
-    end
-    
-    if isprop(ax,'FontSize')
-        orgFontSize = get(ax,'FontSize');
-        set(ax,'FontSize',orgFontSize*FontSizeRatio);
     end
     
     if verLessThan('matlab','8.4') && isa(ax, 'double')
@@ -967,6 +965,12 @@ function setFontSizeRatio(ax,FontSizeRatio)
             end
             continue;
         end
+    end
+    
+    % set font size
+    if isprop(ax,'FontSize')
+        orgFontSize = get(ax,'FontSize');
+        set(ax,'FontSize',orgFontSize*FontSizeRatio);
     end
 end
 
