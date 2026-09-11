@@ -38,6 +38,7 @@ function SN_printfig(filename,varargin)
 %       epsmono2        Encapsulated PostScript Level 2 - Black & White (vector)
 %       pdf             Portable Document Format File (vector)
 %       jpg, jpeg       JPEG (bitmap)
+%       jp2, jpx        JPEG 2000 ? Joint Photographic Experts Group 2000 (bitmap)
 %       png             PNG (bitmap)
 %       ppm             Portable Pixmap Image File (bitmap)
 %       ppmraw          Portable Pixmap Image File - Raw (bitmap)
@@ -77,6 +78,8 @@ function SN_printfig(filename,varargin)
 % Updated by San Nguyen 2014 10 26
 %
 
+
+
 persistent argsNameToCheck;
 if isempty(argsNameToCheck);
     argsNameToCheck = {'FileType','Quality','DPI','Resolution',...
@@ -87,10 +90,10 @@ end
 
 persistent fileExtensions;
 if isempty(fileExtensions)
-    fileExtensions = {'eps','pdf','jpg','png','ppm','emf','bmp','hdf',...
+    fileExtensions = {'eps','pdf','jpg','jp2','png','ppm','emf','bmp','hdf',...
         'tiff','pgm','svg','pcx','pbm','ai', 'ps'};
-                       %1    2      3     4     5     6     7     8 
-          %9     10    11   12    13    14    15
+                       %1    2      3     4     5     6     7     8    9
+          %10    11   12    13    14    15 16
 end
 
 persistent fileTypes;
@@ -105,39 +108,45 @@ if isempty(fileTypes)
         'pdf',      '-dpdf',         2;... % Portable Document Format File (vector)
         'jpg',      '-djpeg',        3;... % JPEG (bitmap
         'jpeg',     '-djpeg',        3;... % JPEG (bitmap)
-        'png',      '-dpng',         4;... % PNG (bitmap)
-        'ppm',      '-dppm',         5;... % Portable Pixmap Image File (bitmap)
-        'ppmraw',   '-ppmraw',       5;... % Portable Pixmap Image File - Raw (bitmap)
-        'emf',      '-dmeta',        6;... % Enhanced Windows Metafile (vector) 
-        'meta',     '-dmeta',        6;... % Enhanced Windows Metafile (vector) 
-        'bmp',      '-dbmp',         7;... % Bitmap Image File (bitmap)
-        'bmp16m',   '-dbmp16m',      7;... % Bitmap Image File - 24-bit (16m colors) (bitmap)
-        'bmp256',   '-dbmp256',      7;... % Bitmap Image File - 8-bit (256 colors) (bitmap)
-        'bmpmono',  '-dbmpmono',     7;... % Bitmap Image File - monochrome (bitmap)
-        'hdf',      '-dhdf',         8;... % Hierarchical Data Format File (bitmap)
-        'tiff',     '-dtiff',        9;... % Tagged Image File Format - compressed (bitmap)
-        'tiffn',    '-dtiffn',       9;... % Tagged Image File Format - not compressed (bitmap)
-        'pgm',      '-dpgm',        10;... % Portable Gray Map Image (bitmap)
-        'pgmraw',   '-dpgmraw',     10;... % Portable Gray Map Image - Raw (bitmap)
-        'svg',      '-dsvg',        11;... % Scalable Vector Graphics File (vector) 
-        'pcx',      '-dpcx24b',     12;... % Paintbrush Bitmap Image File - 24-bit colors (bitmap)
-        'pcx16',    '-dpcx16',      12;... % Paintbrush Bitmap Image File - 16 colors (bitmap)
-        'pcx24b',   '-dpcx24b',     12;... % Paintbrush Bitmap Image File - 24-bit colors (bitmap)
-        'pcx256',   '-dpcx256',     12;... % Paintbrush Bitmap Image File - 8-bit colors (bitmap)
-        'pcxmono',  '-dpcxmono',    12;... % Paintbrush Bitmap Image File - monochrome (bitmap)
-        'pbm',      '-dpbm',        13;... % Portable Bitmap Image (bitmap)
-        'pbmraw',   '-dpbmraw',     13;... % Portable Bitmap Image - Raw (bitmap)
-        'ill',      '-dill',        14;... % Adobe Illustrator Image (vector)
-        'ai',       '-dill',        14;... % Adobe Illustrator Image (vector)
-        'ps',       '-dpsc',        15;... % Poscript File - Color (vector)
-        'psc',      '-dpsc',        15;... % Poscript File - Color (vector)
-        'psmono',   '-dps',         15;... % Poscript File - Black & White (vector)
-        'ps2',      '-dpsc2',       15;... % Poscript File Level 2 - Color (vector)
-        'psc2',     '-dpsc2',       15;... % Poscript File Level 2 - Color (vector)
-        'psmono2',  '-dps2',        15;};   % Poscript File Level 2 - Black & White (vector)
+        'jp2',      '-dpng',         4;... % JPEG-2000 (bitmap
+        'jpx',      '-dpng',         4;... % JPEG-2000 (bitmap)
+        'png',      '-dpng',         5;... % PNG (bitmap)
+        'ppm',      '-dppm',         6;... % Portable Pixmap Image File (bitmap)
+        'ppmraw',   '-ppmraw',       6;... % Portable Pixmap Image File - Raw (bitmap)
+        'emf',      '-dmeta',        7;... % Enhanced Windows Metafile (vector) 
+        'meta',     '-dmeta',        7;... % Enhanced Windows Metafile (vector) 
+        'bmp',      '-dbmp',         8;... % Bitmap Image File (bitmap)
+        'bmp16m',   '-dbmp16m',      8;... % Bitmap Image File - 24-bit (16m colors) (bitmap)
+        'bmp256',   '-dbmp256',      8;... % Bitmap Image File - 8-bit (256 colors) (bitmap)
+        'bmpmono',  '-dbmpmono',     8;... % Bitmap Image File - monochrome (bitmap)
+        'hdf',      '-dhdf',         9;... % Hierarchical Data Format File (bitmap)
+        'tiff',     '-dtiff',       10;... % Tagged Image File Format - compressed (bitmap)
+        'tiffn',    '-dtiffn',      10;... % Tagged Image File Format - not compressed (bitmap)
+        'pgm',      '-dpgm',        11;... % Portable Gray Map Image (bitmap)
+        'pgmraw',   '-dpgmraw',     11;... % Portable Gray Map Image - Raw (bitmap)
+        'svg',      '-dsvg',        12;... % Scalable Vector Graphics File (vector) 
+        'pcx',      '-dpcx24b',     13;... % Paintbrush Bitmap Image File - 24-bit colors (bitmap)
+        'pcx16',    '-dpcx16',      13;... % Paintbrush Bitmap Image File - 16 colors (bitmap)
+        'pcx24b',   '-dpcx24b',     13;... % Paintbrush Bitmap Image File - 24-bit colors (bitmap)
+        'pcx256',   '-dpcx256',     13;... % Paintbrush Bitmap Image File - 8-bit colors (bitmap)
+        'pcxmono',  '-dpcxmono',    13;... % Paintbrush Bitmap Image File - monochrome (bitmap)
+        'pbm',      '-dpbm',        14;... % Portable Bitmap Image (bitmap)
+        'pbmraw',   '-dpbmraw',     14;... % Portable Bitmap Image - Raw (bitmap)
+        'ill',      '-dill',        15;... % Adobe Illustrator Image (vector)
+        'ai',       '-dill',        15;... % Adobe Illustrator Image (vector)
+        'ps',       '-dpsc',        16;... % Poscript File - Color (vector)
+        'psc',      '-dpsc',        16;... % Poscript File - Color (vector)
+        'psmono',   '-dps',         16;... % Poscript File - Black & White (vector)
+        'ps2',      '-dpsc2',       16;... % Poscript File Level 2 - Color (vector)
+        'psc2',     '-dpsc2',       16;... % Poscript File Level 2 - Color (vector)
+        'psmono2',  '-dps2',        16;};  % Poscript File Level 2 - Black & White (vector)
 end
-if isempty(filename) || ~ischar(filename)
+if isempty(filename) || ~(ischar(filename)||isstring(filename))
     error('MATLAB:SN_printfig:emptyFilename','You are missing a filename...');
+end
+
+if(isstring(filename))
+    filename = char(filename);
 end
 FileType = '';
 FileTypeN = [];
@@ -160,7 +169,7 @@ NoSource = false;
 NoTimeStamp = false;
 SourceAX = NaN;
 SourceText = NaN;
-
+jp2_source = '';
 
 index = 1;
 n_items = nargin-1;
@@ -401,11 +410,17 @@ if FontSizeRatio ~= 1
 end
 
 % the next few lines will determine the right filetype to print
-FileEnding = find(filename == '.',1,'last');
-FileAddExt = true;
-if ~isempty(FileEnding)
-    FileEnding = filename(FileEnding+1:end);
+[~,~,FileEnding] = fileparts(filename);
+if(numel(FileEnding)>1)
+    FileEnding = FileEnding(2:end);
+else
+    FileEnding = "";
 end
+% FileEnding = find(filename == '.',1,'last');
+FileAddExt = true;
+% if ~isempty(FileEnding)
+%     FileEnding = filename(FileEnding+1:end);
+% end
     
 % if ~isempty(FileType)
 %     FileTypeN = find(strcmpi(FileType,fileTypes{:,1}),1);
@@ -479,6 +494,17 @@ if PrintScreen
     if FontSizeRatio ~= 1
         setFontSizeRatio(gcf,1/FontSizeRatio);
     end
+    %special stuff for JPEG2000
+    if sum(strcmpi(FileExt,{'jp2', 'jpx'}))
+        IM = imread(filename,'png');
+        imwrite(IM,filename,'jp2',...
+            'Mode','lossy',...
+            'CompressionRatio',8,...
+            'ProgressionOrder','RLCP',...
+            'QualityLayers',1,...
+            'ReductionLevels',6,...
+            'Comment',jp2_source);
+    end
     return;
 elseif ~empty(PSize)
     oldscreenunits = get(Figure,'Units');
@@ -514,6 +540,17 @@ elseif ~empty(PSize)
     if FontSizeRatio ~= 1
         setFontSizeRatio(gcf,1/FontSizeRatio);
     end
+    %special stuff for JPEG2000
+    if sum(strcmpi(FileExt,{'jp2', 'jpx'}))
+        IM = imread(filename,'png');
+        imwrite(IM,filename,'jp2',...
+            'Mode','lossy',...
+            'CompressionRatio',8,...
+            'ProgressionOrder','RLCP',...
+            'QualityLayers',2,...
+            'ReductionLevels',4,...
+            'Comment',jp2_source);
+    end
     return;
 else
     writeSource();
@@ -533,7 +570,17 @@ end
 if FontSizeRatio ~= 1
     setFontSizeRatio(gcf,1/FontSizeRatio);
 end
-    
+%special stuff for JPEG2000
+if sum(strcmpi(FileExt,{'jp2', 'jpx'}))
+    IM = imread(filename,'png');
+    imwrite(IM,filename,'jp2',...
+        'Mode','lossy',...
+        'CompressionRatio',8,...
+        'ProgressionOrder','RLCP',...
+        'QualityLayers',2,...
+        'ReductionLevels',4,...
+        'Comment',jp2_source);
+end
     % write source text on Figure
     function writeSource()
         
@@ -551,7 +598,7 @@ end
         else
             mFileName = fig_UserData.mfilename;
 %             mFileLine = fig_UserData.line;
-            mFileDate = fig_UserData.date;
+%             mFileDate = fig_UserData.date;
         end
         
         % if the figure doesn't contain the source we might try to extract
@@ -591,7 +638,7 @@ end
             gcf_h = gcf_pos(4);
             
             fontSize = 2/100;
-            
+            textStr = '';
             if isempty(mFileName) || NoSource
                 if NoTimeStamp
                     return;
@@ -627,8 +674,12 @@ end
             %             textStr = sprintf('%s',textStr);
             %             SourceText = text(0.995,0.005,textStr,...
             
-            
+            if sum(strcmpi(FileExt,{'jp2', 'jpx'}))
+                jp2_source = textStr;
+            end
+                
             SourceAX = axes('position',[0 0 1 1]);
+%             uistack(SourceAX,'bottom');
             if verLessThan('matlab','8.4')
                 set(SourceAX,...
                     'xcolor',get(gcf,'Color'),...
